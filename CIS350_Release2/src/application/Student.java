@@ -40,10 +40,13 @@ public class Student implements Serializable{
 	 * 
 	 * @throws Exception Any set methods receive bad data
 	 ******************************************************************/
-	public Student(String name, int gpa, String major, String standing, 
+	public Student(String name, float gpa, String major, String standing, 
 			String gNum) throws Exception{
 		/** sets the name of the student */
 		setName(name);
+		
+		/** sets the gpa of the student */
+		setGPA(gpa);
 		
 		/** sets the major of the student */
 		setMajor(major);
@@ -141,11 +144,11 @@ public class Student implements Serializable{
 	public void setStanding(String standing)throws Exception{
 		if (standing.equals(""))
 			throw new Exception("Standing cannot be empty");
-		if (standing.equals("Freshman") || standing.equals("Sophomore") ||
-				standing.equals("Junior") || standing.equals("Senior") || standing.equals("Graduate"))	
+		//if (standing.equals("Freshman") || standing.equals("Sophomore") ||
+				//standing.equals("Junior") || standing.equals("Senior") || standing.equals("Graduate"))	
 			this.standing = standing;
-		else
-			throw new Exception("Invalid Standing");
+		//else
+			//throw new Exception("Invalid Standing");
 	}
 	
 	/*******************************************************************
