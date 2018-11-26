@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -36,9 +38,11 @@ public class GUIController {
     @FXML
     private TextField gNumField;
     @FXML
-    private TextField standingField;
+    private ComboBox<String> standingBox;
     @FXML
     private TextField nameField;
+    @FXML
+    private MenuItem deleteStudent;
     
     private ObservableList<Student> list;
     
@@ -48,6 +52,7 @@ public class GUIController {
         studentList = new StudentTable();
         ObservableList<Student> list = FXCollections.observableArrayList(studentList.returnList());
         table.setItems(list);
+        									
         nameColumn.setCellValueFactory(
         		  new PropertyValueFactory<Student,String>("name")
         		);
@@ -66,12 +71,18 @@ public class GUIController {
     }
     
     @FXML
+    public void delete() {
+    	Student s = table.getSelectionModel().getSelectedItem();
+    	table.getItems().remove(s);
+    }
+    
+    @FXML
     public void add() {
     	Student s = new Student();
 
     	try {
     		s = new Student(nameField.getText(), Float.parseFloat(gpaField.getText()), majorField.getText(),
-    				standingField.getText(), gNumField.getText());
+    				standingBox.getValue().toString(), gNumField.getText());
     		
     		table.getItems().add(s);
     		
@@ -87,7 +98,7 @@ public class GUIController {
     	nameField.setText("");
     	gpaField.setText("");
     	majorField.setText("");
-    	standingField.setText("");
+    	standingBox.setPromptText("Freshman");
     	gNumField.setText("");
     }
 }

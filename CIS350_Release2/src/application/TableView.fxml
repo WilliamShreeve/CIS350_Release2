@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,7 +21,7 @@
         <Menu mnemonicParsing="false" text="Edit">
           <items>
             <MenuItem mnemonicParsing="false" text="Add" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
+            <MenuItem mnemonicParsing="false" onAction="#delete" text="Delete" fx:id="deleteStudent" />
             <MenuItem mnemonicParsing="false" text="View" />
           </items>
         </Menu>
@@ -43,8 +44,18 @@
     <TextField id="Name" fx:id="nameField" layoutX="14.0" layoutY="585.0" prefWidth="210.0" promptText="Name" />
     <TextField fx:id="gpaField" layoutX="225.0" layoutY="585.0" prefWidth="99.0" promptText="GPA" />
     <TextField fx:id="majorField" layoutX="326.0" layoutY="585.0" prefWidth="164.0" promptText="Major" />
-    <TextField fx:id="standingField" layoutX="490.0" layoutY="585.0" prefWidth="128.0" promptText="Standing" />
     <TextField fx:id="gNumField" layoutX="620.0" layoutY="585.0" prefWidth="216.0" promptText="G-Number" />
     <Button fx:id="addButton" layoutX="360.0" layoutY="627.0" mnemonicParsing="false" onAction="#add" text="Add Student" />
+    <ComboBox fx:id="standingBox" layoutX="490.0" layoutY="585.0" minHeight="23.0" prefHeight="-1.0" prefWidth="130.0" promptText="Standing">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Freshman" />
+          <String fx:value="Sophomore" />
+          <String fx:value="Junior" />
+          <String fx:value="Senior" />
+          <String fx:value="Graduate" />
+        </FXCollections>
+      </items>
+    </ComboBox>
   </children>
 </AnchorPane>
