@@ -52,13 +52,13 @@ public class GUIController {
         		  new PropertyValueFactory<Student,String>("name")
         		);
         gpaColumn.setCellValueFactory(
-      		  new PropertyValueFactory<Student,String>("gpa")
+      		  new PropertyValueFactory<Student,String >("GPA")
         		);
         majorColumn.setCellValueFactory(
       		  new PropertyValueFactory<Student,String>("major")
         		);
         gNumberColumn.setCellValueFactory(
-      		  new PropertyValueFactory<Student,String>("gNumber")
+      		  new PropertyValueFactory<Student,String>("gNum")
         		);
         standingColumn.setCellValueFactory(
       		  new PropertyValueFactory<Student,String>("standing")
