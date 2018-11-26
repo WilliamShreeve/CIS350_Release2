@@ -1,5 +1,15 @@
 package application;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,6 +53,10 @@ public class GUIController {
     private TextField nameField;
     @FXML
     private MenuItem deleteStudent;
+    @FXML
+    private MenuItem save;
+    @FXML
+    private MenuItem load;
     
     private ObservableList<Student> list;
     
@@ -104,4 +118,55 @@ public class GUIController {
     	standingBox.setPromptText("Standing");
     	gNumField.setText("");
     }
+    
+    @FXML
+    public void save() {
+    	String filename = "";
+        JFileChooser chooser = new JFileChooser();
+		int status = chooser.showSaveDialog(null);
+		if(status == JFileChooser.APPROVE_OPTION) {
+			filename = chooser.getSelectedFile().
+					getAbsolutePath();
+		}
+    	try {
+			FileOutputStream fos = new FileOutputStream(filename);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(table);
+			oos.close();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+    
+    }
+    
+    @FXML
+    public void load() {
+    	String filename = "";
+    	JFileChooser chooser = new JFileChooser();
+  		int status = chooser.showSaveDialog(null);
+  		if(status == JFileChooser.APPROVE_OPTION) {
+  			filename = chooser.getSelectedFile().
+  					getAbsolutePath();
+  		}
+    	try {
+			FileInputStream fileIn = new FileInputStream(filename);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			list = (ObservableList<Student>) in.readObject();
+			in.close();
+		}
+		catch(IOException e) {
+			JOptionPane.showMessageDialog
+			(null, "Invalid File!");
+		}
+		catch(ClassNotFoundException e) {
+			JOptionPane.showMessageDialog
+			(null, "Invalid File!");
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog
+			(null, "Invalid File!");
+		}
+    }
+    
 }
