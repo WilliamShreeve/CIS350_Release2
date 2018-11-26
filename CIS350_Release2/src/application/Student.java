@@ -83,7 +83,7 @@ public class Student implements Serializable{
 	 ******************************************************************/
 	public void setName(String name)throws Exception{
 		if (name.equals(""))
-			throw new Exception("Name cannot be empty");
+			throw new Exception("Invalid Name");
 		this.name = name;
 	}
 	
@@ -103,7 +103,7 @@ public class Student implements Serializable{
 	 ******************************************************************/
 	public void setMajor(String major)throws Exception{
 		if (major.equals(""))
-			throw new Exception("Major cannot be empty");
+			throw new Exception("Invalid Major");
 		this.major = major;
 	}
 	
@@ -143,7 +143,7 @@ public class Student implements Serializable{
 	 ******************************************************************/
 	public void setStanding(String standing)throws Exception{
 		if (standing.equals(""))
-			throw new Exception("Standing cannot be empty");
+			throw new Exception("Invalid Standing");
 		//if (standing.equals("Freshman") || standing.equals("Sophomore") ||
 				//standing.equals("Junior") || standing.equals("Senior") || standing.equals("Graduate"))	
 			this.standing = standing;
@@ -168,7 +168,7 @@ public class Student implements Serializable{
 	 ******************************************************************/
 	public void setGNum(String gNum)throws Exception{
 		if (gNum.equals(""))
-			throw new Exception("G Number cannot be empty");
+			throw new Exception("Invalid G-Number!");
 		this.gNum = gNum;
 	
 	}

@@ -81,6 +81,9 @@ public class GUIController {
     	Student s = new Student();
 
     	try {
+    		if(standingBox.getValue() == null) {
+    			throw new Exception("No standing selected.");
+    		}
     		s = new Student(nameField.getText(), Float.parseFloat(gpaField.getText()), majorField.getText(),
     				standingBox.getValue().toString(), gNumField.getText());
     		
@@ -91,14 +94,14 @@ public class GUIController {
     		Alert alert = new Alert(AlertType.WARNING);
     		alert.setTitle("Error");
     		alert.setHeaderText(null);
-    		alert.setContentText("Invalid Student Values!");
+    		alert.setContentText("ERROR: " + e.toString());
     		alert.showAndWait();
     	}
     	
     	nameField.setText("");
     	gpaField.setText("");
     	majorField.setText("");
-    	standingBox.setPromptText("Freshman");
+    	standingBox.setPromptText("Standing");
     	gNumField.setText("");
     }
 }
