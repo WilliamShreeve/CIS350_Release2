@@ -1,5 +1,6 @@
 package application;
 
+import java.util.List;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -131,7 +132,9 @@ public class GUIController {
     	try {
 			FileOutputStream fos = new FileOutputStream(filename);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(table);
+			List<Student> toArray = table.getItems();
+			toArray = new ArrayList<Student>(toArray);
+			oos.writeObject(toArray);
 			oos.close();
 		}
 		catch(IOException e) {
@@ -152,7 +155,9 @@ public class GUIController {
     	try {
 			FileInputStream fileIn = new FileInputStream(filename);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			list = (ObservableList<Student>) in.readObject();
+			List<Student> toArray = (List<Student>) in.readObject();
+			toArray = new ArrayList<Student>(toArray);
+			table.setItems(FXCollections.observableArrayList(toArray));
 			in.close();
 		}
 		catch(IOException e) {
