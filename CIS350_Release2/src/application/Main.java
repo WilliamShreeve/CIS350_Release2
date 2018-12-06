@@ -23,13 +23,15 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			AnchorPane root = FXMLLoader.load(getClass().getResource("TableView.fxml"));
-			Scene scene = new Scene(root,850,680);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			AnchorPane root = FXMLLoader.load(getClass().
+			    getResource("TableView.fxml"));
+			Scene scene = new Scene(root, 850, 680);
+			scene.getStylesheets().add(getClass().
+			    getResource("application.css").toExternalForm());
 			primaryStage.setTitle("Student Database");
 			primaryStage.setScene(scene);
 			primaryStage.show();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

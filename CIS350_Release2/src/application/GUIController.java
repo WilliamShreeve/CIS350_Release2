@@ -36,56 +36,78 @@ import org.apache.poi.ss.usermodel.Workbook;
  **********************************************************************/
 public class GUIController {
     
-    /** TableView of Students */
+    /** TableView of Students. */
     @FXML
     private TableView<Student> table;
     
-    /** The various TableColumns used in our application */
+    /** TableColumn for name. */
     @FXML
     private TableColumn<Student, String> nameColumn;
+    
+    /** TableColumn for GPA. */
     @FXML
     private TableColumn<Student, String> gpaColumn;
+    
+    /** TableColumn for major. */
     @FXML
     private TableColumn<Student, String> majorColumn;
+    
+    /** TableColumn for GNumber. */
     @FXML
     private TableColumn<Student, String> gNumberColumn;
+    
+    /** TableColumn for class standing. */
     @FXML
     private TableColumn<Student, String> standingColumn;
     
-    /** Button for adding students */
+    /** Button for adding students. */
     @FXML
     private Button addButton;
     
-    /** Various TextFields needed by our application */
+    /** TextField for GPA. */
     @FXML
     private TextField gpaField;
+    
+    /** TextField for major. */
     @FXML
     private TextField majorField;
+    
+    /** TextField for GNumber. */ 
     @FXML
     private TextField gNumField;
+    
+    /** TextField for name. */
     @FXML
     private TextField nameField;
     
-    /** The drop down menu for class standing */
+    /** The drop down menu for class standing. */
     @FXML
     private ComboBox<String> standingBox;
     
-    /** Items on the MenuBar */
+    /** MenuItem for deleting a student. */
     @FXML
     private MenuItem deleteStudent;
+    
+    /** MenuItem for adding a student. */
     @FXML
     private MenuItem addStudent;
+    
+    /** MenuItem for saving serialized file. */
     @FXML
     private MenuItem save;
+    
+    /** MenuItem to save as an Excel file. */
     @FXML
     private MenuItem saveX;
+    
+    /** MenuItem to load serialized file. */
     @FXML
     private MenuItem load;
     
-    /** ObservableList of students in the database */
+    /** ObservableList of students in the database. */
     private ObservableList<Student> list;
     
-    /** Our instance of using a Table with Release 1 */
+    /** Our instance of using a Table with Release 1. */
     private StudentTable studentList;
     
     /*******************************************************************
@@ -98,19 +120,19 @@ public class GUIController {
         list = FXCollections.observableArrayList(studentList.returnList());
                                             
         nameColumn.setCellValueFactory(
-                  new PropertyValueFactory<Student,String>("name")
+                  new PropertyValueFactory<Student, String>("name")
                 );
         gpaColumn.setCellValueFactory(
-              new PropertyValueFactory<Student,String >("GPA")
+              new PropertyValueFactory<Student, String>("GPA")
                 );
         majorColumn.setCellValueFactory(
-              new PropertyValueFactory<Student,String>("major")
+              new PropertyValueFactory<Student, String>("major")
                 );
         gNumberColumn.setCellValueFactory(
-              new PropertyValueFactory<Student,String>("gNum")
+              new PropertyValueFactory<Student, String>("gNum")
                 );
         standingColumn.setCellValueFactory(
-              new PropertyValueFactory<Student,String>("standing")
+              new PropertyValueFactory<Student, String>("standing")
                 );
         
         table.setItems(list);
@@ -147,7 +169,7 @@ public class GUIController {
         Student s = new Student();
 
         try {
-            if(standingBox.getValue() == null) {
+            if (standingBox.getValue() == null) {
                 throw new Exception("No standing selected.");
             }
             s = new Student(nameField.getText(), gpaField.getText(), 
@@ -161,8 +183,7 @@ public class GUIController {
             majorField.setText("");
             standingBox.setPromptText("Standing");
             gNumField.setText("");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText(null);
@@ -180,10 +201,10 @@ public class GUIController {
         String filename = "";
         JFileChooser chooser = new JFileChooser();
         int status = chooser.showSaveDialog(null);
-        if(status == JFileChooser.APPROVE_OPTION) {
+        if (status == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().
                     getAbsolutePath();
-        }else {
+        } else {
             return;
         }
         try {
@@ -193,13 +214,17 @@ public class GUIController {
             toArray = new ArrayList<Student>(toArray);
             oos.writeObject(toArray);
             oos.close();
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     
     }
     
+    /*******************************************************************
+     * This method saves a file as an Excel spreadsheet.
+     * 
+     * @throws IOException If input is incorrect
+     ******************************************************************/
     @FXML
     public void saveAsExcel() throws IOException {
         @SuppressWarnings("resource")
@@ -215,10 +240,10 @@ public class GUIController {
         for (int i = 0; i < table.getItems().size(); i++) {
             row = spreadsheet.createRow(i + 1);
             for (int j = 0; j < table.getColumns().size(); j++) {
-                if(table.getColumns().get(j).getCellData(i) != null) { 
-                    row.createCell(j).setCellValue(table.getColumns().get(j).getCellData(i).toString()); 
-                }
-                else {
+                if (table.getColumns().get(j).getCellData(i) != null) { 
+                    row.createCell(j).setCellValue(table.getColumns()
+                            .get(j).getCellData(i).toString()); 
+                } else {
                     row.createCell(j).setCellValue("");
                 }   
             }
@@ -226,7 +251,7 @@ public class GUIController {
         String filename = "";
         JFileChooser chooser = new JFileChooser();
         int status = chooser.showSaveDialog(null);
-        if(status == JFileChooser.APPROVE_OPTION) {
+        if (status == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().
                     getAbsolutePath();
         }
@@ -245,10 +270,10 @@ public class GUIController {
         String filename = "";
         JFileChooser chooser = new JFileChooser();
         int status = chooser.showOpenDialog(null);
-        if(status == JFileChooser.APPROVE_OPTION) {
+        if (status == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().
                     getAbsolutePath();
-        }else {
+        } else {
             return;
         }
         try {
@@ -258,18 +283,12 @@ public class GUIController {
             toArray = new ArrayList<Student>(toArray);
             table.setItems(FXCollections.observableArrayList(toArray));
             in.close();
-        }
-        catch(IOException e) {
-            JOptionPane.showMessageDialog
-            (null, "Invalid File!");
-        }
-        catch(ClassNotFoundException e) {
-            JOptionPane.showMessageDialog
-            (null, "Invalid File!");
-        }
-        catch(Exception e) {
-            JOptionPane.showMessageDialog
-            (null, "Invalid File!");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Invalid File!");
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Invalid File!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid File!");
         }
     }
     

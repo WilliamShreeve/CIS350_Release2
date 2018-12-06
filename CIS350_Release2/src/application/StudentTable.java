@@ -21,30 +21,30 @@ import javax.swing.JOptionPane;
  * 
  * @author William Shreeve, Hai Duong, Trung-Vuong Pham
  ************************************************************************/
-public class StudentTable{
+public class StudentTable {
 
-    /** ArrayList of students */
+    /** ArrayList of students. */
 	private ArrayList<Student> students;
 	
 	/*******************************************************************
 	 * The default constructor that initializes the list of students
 	 * and sets the column names.
 	 ******************************************************************/
-	public StudentTable(){
+	public StudentTable() {
 		students = new ArrayList<Student>();
 	}
 	
 	/*******************************************************************
-	 * Returns the array of students
+	 * Returns the array of students.
 	 * 
 	 * @return returns ArrayList of students
 	 ******************************************************************/
-	public ArrayList<Student> returnList(){
+	public ArrayList<Student> returnList() {
 		return students;
 	}
 	
 	/*******************************************************************
-	 * Gets the row count
+	 * Gets the row count.
 	 * 
 	 * @return Returns the number of students
 	 ******************************************************************/
@@ -54,7 +54,7 @@ public class StudentTable{
 	
 	
 	/*******************************************************************
-	 * Replaces student with the parameter student
+	 * Replaces student with the parameter student.
 	 * 
 	 * @param s	Student to replace student with
 	 * @param i Index to replace
@@ -64,7 +64,7 @@ public class StudentTable{
 	}	
 
 	/*******************************************************************
-	 * Gets the value at a specific row and column
+	 * Gets the value at a specific row and column.
 	 * 
 	 * @param rowIndex the specified row
 	 * @param columnIndex the specified column
@@ -80,48 +80,51 @@ public class StudentTable{
 			return students.get(rowIndex).getStanding();
 		case 3:
 			return students.get(rowIndex).getGNum();
-
+		default:
+		    break;
 		}
 	return null;
 	}
 	
 	/*******************************************************************
-	 * Gets the list of students
+	 * Gets the list of students.
 	 * 
 	 * @return An ArrayList of all students
 	 ******************************************************************/
-	public ArrayList<Student> getStudents(){
+	public ArrayList<Student> getStudents() {
 		return students;
 	}
 	
 	/*******************************************************************
-	 * Gets the student at the requested index
+	 * Gets the student at the requested index.
 	 * 
 	 * @param index the index of the requested student
 	 * @return the student at the specified index
+	 * @throws IndexOutOfBoundsException When index is out of range 
 	 ******************************************************************/
-	public Student getAtIndex(int index) throws IndexOutOfBoundsException {
+	public Student getAtIndex(int index) 
+	        throws IndexOutOfBoundsException {
 			return students.get(index);
 		
 	}
 	
 	/*******************************************************************
-	 * Returns the student at the selected index
+	 * Returns the student at the selected index.
 	 * 
 	 * @param index	Index selected to retrieve student
 	 * @return	Student at the selected index
 	 * @throws Exception If index is out of bounds of list
 	 ******************************************************************/
 	public Student getAt(int index) throws Exception {
-		if(index <= students.size()-1) {
+		if (index <= students.size() - 1) {
 			return students.get(index);
-		}
-		else
+		} else {
 			throw new Exception();
+		}
 	}
 	
 	/*******************************************************************
-	 * Converts a string input into a Student object
+	 * Converts a string input into a Student object.
 	 * 
 	 * @param input The values to be converted into a Student object
 	 * @return Student object that holds the same information as the 
@@ -135,15 +138,14 @@ public class StudentTable{
 		if (items.length == 6) {
 			GregorianCalendar date = new GregorianCalendar();
 			String[] parsedDate = items[2].split("/");
-			date.set(GregorianCalendar.MONTH, Integer.parseInt
-					(parsedDate[0]) - 1);
-			date.set(GregorianCalendar.DAY_OF_MONTH, Integer.parseInt
-					(parsedDate[1]));
-			date.set(GregorianCalendar.YEAR, Integer.parseInt
-					(parsedDate[2]));
+			date.set(GregorianCalendar.MONTH, Integer.parseInt(
+			        parsedDate[0]) - 1);
+			date.set(GregorianCalendar.DAY_OF_MONTH, 
+			        Integer.parseInt(parsedDate[1]));
+			date.set(GregorianCalendar.YEAR, Integer.parseInt(
+			        parsedDate[2]));
 			
-		}
-		else {
+		} else {
 			throw new Exception("File is corrupted");
 		}
 		return null;
@@ -157,9 +159,10 @@ public class StudentTable{
 	 * @return True if valid, false if invalid.
 	 ******************************************************************/
 	public boolean isValidGNum(Student s) {
-		for(Student s1: students) {
-			if(s1.getGNum() == s.getGNum())
+		for (Student s1: students) {
+			if (s1.getGNum().equals(s.getGNum())) {
 				return false;
+			}
 		}
 		return true;
 	}
@@ -168,7 +171,7 @@ public class StudentTable{
 	 * This method sorts the students by name using a sort class called 
 	 * SortByName().
 	 ******************************************************************/
-	public void sortByName(){
+	public void sortByName() {
 		Collections.sort(getStudents(), new SortByName());
 	}
 	
@@ -188,15 +191,17 @@ public class StudentTable{
 	 * This method sorts the standings of the students, 
 	 * using an anonymous class in Java.
 	 ******************************************************************/
-	public void sortByStanding(){
+	public void sortByStanding() {
 		Collections.sort(getStudents(), new Comparator<Student>() {
-			   public int compare (Student o1, Student o2) {
-				   return o1.getStanding().compareTo(o2.getStanding());
-			   }});
+			   public int compare(Student o1, Student o2) {
+				   return o1.getStanding().compareTo(
+				       o2.getStanding());
+			   } });
 	} 
 	
 	/*******************************************************************
-     * Saves the list of students as a serialized file
+     * Saves the list of students as a serialized file.
+     * 
      * @param filename name of file to save to 
      ******************************************************************/
     public void saveAsSerialized(String filename) {
@@ -205,9 +210,8 @@ public class StudentTable{
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(students);
             oos.close();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
         }
         
     }
@@ -224,19 +228,12 @@ public class StudentTable{
             ObjectInputStream in = new ObjectInputStream(fileIn);
             students = (ArrayList<Student>) in.readObject();
             in.close();
-        }
-        catch(IOException e) {
-            JOptionPane.showMessageDialog
-            (null, "Invalid File!");
-        }
-        catch(ClassNotFoundException e) {
-            JOptionPane.showMessageDialog
-            (null, "Invalid File!");
-        }
-        catch(Exception e) {
-            JOptionPane.showMessageDialog
-            (null, "Invalid File!");
-        }
-        
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Invalid File!");
+            } catch (ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Invalid File!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Invalid File!");
+        }    
     }
 }

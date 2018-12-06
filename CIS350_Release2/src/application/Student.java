@@ -1,7 +1,6 @@
 package application;
 
 import java.io.Serializable;
-
 /***********************************************************************
  * Student class keeps track of the student's information such as 
  * what their name is, their major and class standing, the courses they
@@ -9,25 +8,25 @@ import java.io.Serializable;
  * 
  * @author William Shreeve, Hai Duong, Trung-Vuong Pham
  **********************************************************************/
-public class Student implements Serializable{
+public class Student implements Serializable {
 
-	/** default serial ID */
+	/** Default serial ID. */
 	private static final long serialVersionUID = 1L;
 
-	/** name of the Student */
-	protected String name;
+	/** Name of the Student. */
+	private String name;
 	
-	/** name of the major student is pursuing */
-	protected String major;
+	/** Name of the major student is pursuing. */
+	private String major;
 	
-	/** the student's class standing */
-	protected String standing;
+	/** The student's class standing. */
+	private String standing;
 	
-	/** student ID number (GNumber) */
-	protected String gNum;
+	/** Student ID number (GNumber). */
+	private String gNum;
 	
-	/** student's gpa **/
-	protected String gpa;
+	/** Student's gpa. **/
+	private String gpa;
 	
 	/*******************************************************************
 	 * Constructor that sets up the student information with given 
@@ -42,7 +41,7 @@ public class Student implements Serializable{
 	 * @throws Exception Any set methods receive bad data
 	 ******************************************************************/
 	public Student(String name, String gpa, String major, String standing, 
-			String gNum) throws Exception{
+			String gNum) throws Exception {
 		/** sets the name of the student */
 		setName(name);
 		
@@ -57,14 +56,12 @@ public class Student implements Serializable{
 		
 		/** sets the G Number of the student */
 		setGNum(gNum);
-		
 	}
 	
 	/*******************************************************************
 	 * Default constructor for Student class that takes in no values.
 	 ******************************************************************/
-	public Student(){
-		
+	public Student() {
 	}
 	
 	/*******************************************************************
@@ -72,20 +69,21 @@ public class Student implements Serializable{
 	 * 
 	 * @return name The student's name
 	 ******************************************************************/
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 	
 	/*******************************************************************
-	 * Setter method for name of a student
+	 * Setter method for name of a student.
 	 * 
 	 * @param name The student's name
 	 * @throws Exception when any data entered is invalid
 	 ******************************************************************/
-	public void setName(String name)throws Exception{
-		if (name.equals(""))
+	public void setName(String name)throws Exception {
+		if (name.equals("")) {
 			throw new Exception("Empty String");
-		this.name=name;
+		}
+		this.name = name;
 	}
 	
 	/*******************************************************************
@@ -93,18 +91,20 @@ public class Student implements Serializable{
 	 * 
 	 * @return major The student's major
 	 ******************************************************************/
-	public String getMajor(){
+	public String getMajor() {
 		return major;
 	}
+	
 	/*******************************************************************
 	 * Setter method for major of a student.
 	 * 
 	 * @param major The student's major
 	 * @throws Exception Any data entered is invalid
 	 ******************************************************************/
-	public void setMajor(String major)throws Exception{
-		if (major.equals(""))
+	public void setMajor(String major)throws Exception {
+		if (major.equals("")) {
 			throw new Exception("Empty String");
+		}
 		this.major = major;
 	}
 	
@@ -113,7 +113,7 @@ public class Student implements Serializable{
 	 * 
 	 * @return standing The student's class standing
 	 ******************************************************************/
-	public String getStanding(){
+	public String getStanding() {
 		return standing;
 	}
 	
@@ -123,18 +123,15 @@ public class Student implements Serializable{
      * @param standing The student's class standing
      * @throws Exception Any data entered is invalid
      ******************************************************************/
-    public void setStanding(String standing)throws Exception{
-        if (standing.equals(""))
-            throw new Exception("Empty String");
-        //if (standing.equals("Freshman") || standing.equals("Sophomore") ||
-                //standing.equals("Junior") || standing.equals("Senior") || standing.equals("Graduate"))    
-            this.standing = standing;
-        //else
-            //throw new Exception("Invalid Standing");
+    public void setStanding(String standing)throws Exception {
+        if (standing.equals("")) {
+            throw new Exception("Empty String"); 
+        }
+        this.standing = standing;
     }
 	
 	/******************************************************************
-	 * Getter method for student's GPA
+	 * Getter method for student's GPA.
 	 * 
 	 * @return student's GPA as a float
 	 *****************************************************************/
@@ -149,8 +146,9 @@ public class Student implements Serializable{
 	 * @throws Exception A value less than 0 or higher than 4
 	 ******************************************************************/
 	public void setGPA(String g) throws Exception {
-		if(Float.parseFloat(g) > 4.0 || Float.parseFloat(g) < 0)
+		if (Float.parseFloat(g) > 4.0 || Float.parseFloat(g) < 0) {
 			throw new Exception("Invalid GPA");
+		}
 		this.gpa = g;
 	}
 	
@@ -159,7 +157,7 @@ public class Student implements Serializable{
 	 * 
 	 * @return gNum The student's G Number
 	 ******************************************************************/
-	public String getGNum(){
+	public String getGNum() {
 		return gNum;
 	}
 	
@@ -169,10 +167,10 @@ public class Student implements Serializable{
 	 * @param gNum The student's G Number
 	 * @throws Exception Any data entered is invalid
 	 ******************************************************************/
-	public void setGNum(String gNum)throws Exception{
-		if (gNum.equals(""))
+	public void setGNum(String gNum)throws Exception {
+		if (gNum.equals("")) {
 			throw new Exception("Empty String");
+		}
 		this.gNum = gNum;
-	
 	}
 }
