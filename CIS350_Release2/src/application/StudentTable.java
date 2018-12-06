@@ -11,7 +11,6 @@ import java.util.GregorianCalendar;
 import java.util.Comparator;
 
 import javax.swing.JOptionPane;
-import javax.swing.table.AbstractTableModel;
 
 
 /*************************************************************************
@@ -22,19 +21,11 @@ import javax.swing.table.AbstractTableModel;
  * 
  * @author William Shreeve, Hai Duong, Trung-Vuong Pham
  ************************************************************************/
-public class StudentTable extends AbstractTableModel{
-
-    /** default serial ID  */
-    private static final long serialVersionUID = 1L;
+public class StudentTable{
 
     /** ArrayList of students */
 	private ArrayList<Student> students;
 	
-	/** Array of the column names. */
-    private String[] columnNames;
-	
-	/** ArrayList of past edits */
-	private ArrayList<String> edits;
 
 	/*******************************************************************
 	 * The default constructor that initializes the list of students
@@ -42,12 +33,6 @@ public class StudentTable extends AbstractTableModel{
 	 ******************************************************************/
 	public StudentTable(){
 		students = new ArrayList<Student>();
-		columnNames = new String[] {"Name",
-		        "GPA",
-                "Major",
-                "Standing",
-                "G-Number"};
-		edits = new ArrayList<String>();
 	}
 	
 	/*******************************************************************
@@ -60,15 +45,6 @@ public class StudentTable extends AbstractTableModel{
 	}
 	
 	/*******************************************************************
-     * Returns the array of edits made in the table
-     * 
-     * @return Returns edits The edits made
-     ******************************************************************/
-	public int getEdits(){
-	    return edits.size();
-	}
-	
-	/*******************************************************************
 	 * Gets the row count
 	 * 
 	 * @return Returns the number of students
@@ -77,26 +53,6 @@ public class StudentTable extends AbstractTableModel{
 		return students.size();
 	}
 	
-	/*******************************************************************
-     * Gets the column count.
-     *
-     * @return Returns the number of columns
-     ******************************************************************/
-    public int getColumnCount() {
-        // TODO Auto-generated method stub
-        return columnNames.length;
-    }
-
-    /*******************************************************************
-     * Gets the column name at a specific index.
-     *
-     * @param col the column index you want the name of
-     * @return returns the name of the specified column
-     ******************************************************************/
-    @Override
-    public String getColumnName(int col) {
-        return columnNames[col];
-    }
 	
 	/*******************************************************************
 	 * Replaces student with the parameter student
@@ -149,14 +105,6 @@ public class StudentTable extends AbstractTableModel{
 			return students.get(index);
 		
 	}
-	
-	/*******************************************************************
-     * Private helper method that calls fireTableRowsInserted which
-     * refreshes the table.
-     ******************************************************************/
-    public void refresh() {
-        fireTableRowsInserted(0, getRowCount() - 1);
-    }
 	
 	/*******************************************************************
 	 * Returns the student at the selected index
@@ -249,7 +197,7 @@ public class StudentTable extends AbstractTableModel{
 	} 
 	
 	/*******************************************************************
-     * Saves the list of students as a serializable file
+     * Saves the list of students as a serialized file
      * @param filename name of file to save to 
      ******************************************************************/
     public void saveAsSerialized(String filename) {
@@ -266,7 +214,8 @@ public class StudentTable extends AbstractTableModel{
     }
     
     /*******************************************************************
-     * Loads list of students from serialized file
+     * Loads list of students from serialized file.
+     * 
      * @param filename Name of file to load from
      ******************************************************************/
     @SuppressWarnings("unchecked")

@@ -2,7 +2,6 @@ package application;
 
 import java.io.Serializable;
 
-
 /***********************************************************************
  * Student class keeps track of the student's information such as 
  * what their name is, their major and class standing, the courses they
@@ -154,7 +153,6 @@ public class Student implements Serializable{
 			throw new Exception("Invalid GPA");
 		this.gpa = g;
 	}
-	
 	
 	/*******************************************************************
 	 * Getter method for the student's G Number.

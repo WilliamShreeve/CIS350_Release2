@@ -25,10 +25,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
+/***********************************************************************
+ * This class controls all of the functionality that occurs within our 
+ * Student Database application. This is known as the controller class
+ * where a TableView is used in replacement of a JTable.
+ * 
+ * @author William Shreeve, Hai Duong, and Trung-vuong Pham
+ **********************************************************************/
 public class GUIController {
-    
-    private StudentTable studentList;
-    
+  
     @FXML
     private TableView<Student> table;
     @FXML
@@ -64,7 +69,12 @@ public class GUIController {
     
     private ObservableList<Student> list;
     
-
+    private StudentTable studentList;
+    
+    /*******************************************************************
+     * This initializes all of the property value factories and set 
+     * cell factories used for our application.
+     ******************************************************************/
     @FXML
     public void initialize() {
         studentList = new StudentTable();
@@ -123,11 +133,10 @@ public class GUIController {
             if(standingBox.getValue() == null) {
                 throw new Exception("No standing selected.");
             }
-            s = new Student(nameField.getText(), gpaField.getText(), majorField.getText(),
-                    standingBox.getValue().toString(), gNumField.getText());
-            
+            s = new Student(nameField.getText(), gpaField.getText(), 
+                    majorField.getText(), standingBox.getValue().
+                    toString(), gNumField.getText());
             table.getItems().add(s);
-            
         }
         catch(Exception e) {
             Alert alert = new Alert(AlertType.WARNING);
@@ -136,17 +145,11 @@ public class GUIController {
             alert.setContentText("ERROR: " + e.toString());
             alert.showAndWait();
         }
-        
         nameField.setText("");
         gpaField.setText("");
         majorField.setText("");
         standingBox.setPromptText("Standing");
         gNumField.setText("");
-    }
-    
-    @FXML
-    public void undo() {
-        
     }
     
     /*******************************************************************
