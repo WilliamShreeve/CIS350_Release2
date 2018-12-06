@@ -26,7 +26,6 @@ public class StudentTable{
     /** ArrayList of students */
 	private ArrayList<Student> students;
 	
-
 	/*******************************************************************
 	 * The default constructor that initializes the list of students
 	 * and sets the column names.

@@ -14,8 +14,8 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#save" text="Save" fx:id="save" />
+            <MenuItem mnemonicParsing="false" onAction="#saveAsExcel" text="Export to Excel" fx:id="saveX" />
             <MenuItem mnemonicParsing="false" onAction="#load" text="Load" fx:id="load" />
-            <MenuItem mnemonicParsing="false" onAction="#undo" text="Undo" />
             <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
           </items>
         </Menu>

@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,6 +22,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /***********************************************************************
  * This class controls all of the functionality that occurs within our 
@@ -33,9 +35,12 @@ import javafx.scene.control.cell.TextFieldTableCell;
  * @author William Shreeve, Hai Duong, and Trung-vuong Pham
  **********************************************************************/
 public class GUIController {
-  
+    
+    /** TableView of Students */
     @FXML
     private TableView<Student> table;
+    
+    /** The various TableColumns used in our application */
     @FXML
     private TableColumn<Student, String> nameColumn;
     @FXML
@@ -46,8 +51,12 @@ public class GUIController {
     private TableColumn<Student, String> gNumberColumn;
     @FXML
     private TableColumn<Student, String> standingColumn;
+    
+    /** Button for adding students */
     @FXML
     private Button addButton;
+    
+    /** Various TextFields needed by our application */
     @FXML
     private TextField gpaField;
     @FXML
@@ -55,9 +64,13 @@ public class GUIController {
     @FXML
     private TextField gNumField;
     @FXML
-    private ComboBox<String> standingBox;
-    @FXML
     private TextField nameField;
+    
+    /** The drop down menu for class standing */
+    @FXML
+    private ComboBox<String> standingBox;
+    
+    /** Items on the MenuBar */
     @FXML
     private MenuItem deleteStudent;
     @FXML
@@ -65,10 +78,14 @@ public class GUIController {
     @FXML
     private MenuItem save;
     @FXML
+    private MenuItem saveX;
+    @FXML
     private MenuItem load;
     
+    /** ObservableList of students in the database */
     private ObservableList<Student> list;
     
+    /** Our instance of using a Table with Release 1 */
     private StudentTable studentList;
     
     /*******************************************************************
@@ -137,6 +154,13 @@ public class GUIController {
                     majorField.getText(), standingBox.getValue().
                     toString(), gNumField.getText());
             table.getItems().add(s);
+            
+            // when student is successfully added, empty text fields
+            nameField.setText("");
+            gpaField.setText("");
+            majorField.setText("");
+            standingBox.setPromptText("Standing");
+            gNumField.setText("");
         }
         catch(Exception e) {
             Alert alert = new Alert(AlertType.WARNING);
@@ -145,11 +169,6 @@ public class GUIController {
             alert.setContentText("ERROR: " + e.toString());
             alert.showAndWait();
         }
-        nameField.setText("");
-        gpaField.setText("");
-        majorField.setText("");
-        standingBox.setPromptText("Standing");
-        gNumField.setText("");
     }
     
     /*******************************************************************
@@ -164,6 +183,8 @@ public class GUIController {
         if(status == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().
                     getAbsolutePath();
+        }else {
+            return;
         }
         try {
             FileOutputStream fos = new FileOutputStream(filename);
@@ -179,18 +200,56 @@ public class GUIController {
     
     }
     
-    /*******************************************************************
-     * This method loads a file to the student database.
-     ******************************************************************/
-    @SuppressWarnings("unchecked")
     @FXML
-    public void load() {
+    public void saveAsExcel() throws IOException {
+        @SuppressWarnings("resource")
+        Workbook workbook = new HSSFWorkbook();
+        Sheet spreadsheet = workbook.createSheet("database");
+
+        Row row = spreadsheet.createRow(0);
+
+        for (int j = 0; j < table.getColumns().size(); j++) {
+            row.createCell(j).setCellValue(table.getColumns().get(j).getText());
+        }
+
+        for (int i = 0; i < table.getItems().size(); i++) {
+            row = spreadsheet.createRow(i + 1);
+            for (int j = 0; j < table.getColumns().size(); j++) {
+                if(table.getColumns().get(j).getCellData(i) != null) { 
+                    row.createCell(j).setCellValue(table.getColumns().get(j).getCellData(i).toString()); 
+                }
+                else {
+                    row.createCell(j).setCellValue("");
+                }   
+            }
+        }
         String filename = "";
         JFileChooser chooser = new JFileChooser();
         int status = chooser.showSaveDialog(null);
         if(status == JFileChooser.APPROVE_OPTION) {
             filename = chooser.getSelectedFile().
                     getAbsolutePath();
+        }
+        FileOutputStream fileOut = new FileOutputStream(filename);
+        workbook.write(fileOut);
+        fileOut.close();
+    }
+    
+    /*******************************************************************
+     * This method loads a file to the student database.
+     ******************************************************************/
+    @SuppressWarnings("unchecked")
+    @FXML
+    public void load() {
+        list.removeAll(list);
+        String filename = "";
+        JFileChooser chooser = new JFileChooser();
+        int status = chooser.showOpenDialog(null);
+        if(status == JFileChooser.APPROVE_OPTION) {
+            filename = chooser.getSelectedFile().
+                    getAbsolutePath();
+        }else {
+            return;
         }
         try {
             FileInputStream fileIn = new FileInputStream(filename);
@@ -215,12 +274,17 @@ public class GUIController {
     }
     
     /*******************************************************************
+     * These methods are helpers to allow editing within the cells of 
+     * the TableView.
+     ******************************************************************/
+    /*******************************************************************
      * This method is used to edit the names in 'Name' column.
      * 
      * @param studentStringCellEditEvent The click event
      * @throws Exception Any errors that can occur
      ******************************************************************/
-    public void onEditName(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) throws Exception {
+    public void onEditName(TableColumn.CellEditEvent
+        <Student, String> studentStringCellEditEvent) throws Exception {
         Student s = table.getSelectionModel().getSelectedItem();
         s.setName(studentStringCellEditEvent.getNewValue());
     }
@@ -231,7 +295,8 @@ public class GUIController {
      * @param studentStringCellEditEvent The click event
      * @throws Exception Any errors that can occur
      ******************************************************************/
-    public void onEditGPA(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) throws Exception {
+    public void onEditGPA(TableColumn.CellEditEvent
+        <Student, String> studentStringCellEditEvent) throws Exception {
         Student s = table.getSelectionModel().getSelectedItem();
         s.setGPA(studentStringCellEditEvent.getNewValue());
     }
@@ -242,7 +307,8 @@ public class GUIController {
      * @param studentStringCellEditEvent The click event
      * @throws Exception Any errors that can occur
      ******************************************************************/
-    public void onEditMajor(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) throws Exception {
+    public void onEditMajor(TableColumn.CellEditEvent
+        <Student, String> studentStringCellEditEvent) throws Exception {
         Student s = table.getSelectionModel().getSelectedItem();
         s.setMajor(studentStringCellEditEvent.getNewValue());
     }
@@ -253,7 +319,8 @@ public class GUIController {
      * @param studentStringCellEditEvent The click event
      * @throws Exception Any errors that can occur
      ******************************************************************/
-    public void onEditStanding(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) throws Exception {
+    public void onEditStanding(TableColumn.CellEditEvent
+        <Student, String> studentStringCellEditEvent) throws Exception {
         Student s = table.getSelectionModel().getSelectedItem();
         s.setStanding(studentStringCellEditEvent.getNewValue());
     }
@@ -264,10 +331,9 @@ public class GUIController {
      * @param studentStringCellEditEvent The click event
      * @throws Exception Any errors that can occur
      ******************************************************************/
-    public void onEditGNum(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) throws Exception {
+    public void onEditGNum(TableColumn.CellEditEvent
+        <Student, String> studentStringCellEditEvent) throws Exception {
         Student s = table.getSelectionModel().getSelectedItem();
         s.setGNum(studentStringCellEditEvent.getNewValue());
     }
-    
-    
 }

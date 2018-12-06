@@ -34,10 +34,10 @@ public class Student implements Serializable{
 	 * parameters.
 	 * 
 	 * @param name The name of the student
+	 * @param gpa The student's GPA
 	 * @param major The student's area of study
 	 * @param standing The student's current status as a student
 	 * @param gNum The student's G number at Grand Valley
-	 * @param expGrad The expected graduation date of the student
 	 * 
 	 * @throws Exception Any set methods receive bad data
 	 ******************************************************************/
@@ -84,7 +84,7 @@ public class Student implements Serializable{
 	 ******************************************************************/
 	public void setName(String name)throws Exception{
 		if (name.equals(""))
-			throw new Exception("Invalid Name");
+			throw new Exception("Empty String");
 		this.name=name;
 	}
 	
@@ -104,7 +104,7 @@ public class Student implements Serializable{
 	 ******************************************************************/
 	public void setMajor(String major)throws Exception{
 		if (major.equals(""))
-			throw new Exception("Invalid Major");
+			throw new Exception("Empty String");
 		this.major = major;
 	}
 	
@@ -125,7 +125,7 @@ public class Student implements Serializable{
      ******************************************************************/
     public void setStanding(String standing)throws Exception{
         if (standing.equals(""))
-            throw new Exception("Invalid Standing");
+            throw new Exception("Empty String");
         //if (standing.equals("Freshman") || standing.equals("Sophomore") ||
                 //standing.equals("Junior") || standing.equals("Senior") || standing.equals("Graduate"))    
             this.standing = standing;
@@ -171,7 +171,7 @@ public class Student implements Serializable{
 	 ******************************************************************/
 	public void setGNum(String gNum)throws Exception{
 		if (gNum.equals(""))
-			throw new Exception("Invalid G-Number!");
+			throw new Exception("Empty String");
 		this.gNum = gNum;
 	
 	}
