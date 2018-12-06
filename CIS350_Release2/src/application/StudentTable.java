@@ -14,25 +14,24 @@ import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 
-
 /*************************************************************************
- * The StudentTable class creates the structure that jtable will follow
+ * The StudentTable class creates the structure that JTable will follow
  * to implement methods and functions on the student database. This
  * currently includes addition, deletion, editing, saving and loading, 
  * and simple sorting.
- * @author William Shreeve, Hai Duong, Trungvuong Pham
- *
+ * 
+ * @author William Shreeve, Hai Duong, Trung-Vuong Pham
  ************************************************************************/
-public class StudentTable{
-	
-	/** default serial ID */
-	private static final long serialVersionUID = 1L;
-	
-	/** array of the column names */
-	private String[] COL_NAMES;
-	
-	/** ArrayList of students */
+public class StudentTable extends AbstractTableModel{
+
+    /** default serial ID  */
+    private static final long serialVersionUID = 1L;
+
+    /** ArrayList of students */
 	private ArrayList<Student> students;
+	
+	/** Array of the column names. */
+    private String[] columnNames;
 	
 	/** ArrayList of past edits */
 	private ArrayList<String> edits;
@@ -43,15 +42,30 @@ public class StudentTable{
 	 ******************************************************************/
 	public StudentTable(){
 		students = new ArrayList<Student>();
+		columnNames = new String[] {"Name",
+		        "GPA",
+                "Major",
+                "Standing",
+                "G-Number"};
 		edits = new ArrayList<String>();
 	}
 	
 	/*******************************************************************
 	 * Returns the array of students
-	 * @return Returns arraylist of students
+	 * 
+	 * @return returns ArrayList of students
 	 ******************************************************************/
 	public ArrayList<Student> returnList(){
 		return students;
+	}
+	
+	/*******************************************************************
+     * Returns the array of edits made in the table
+     * 
+     * @return Returns edits The edits made
+     ******************************************************************/
+	public int getEdits(){
+	    return edits.size();
 	}
 	
 	/*******************************************************************
@@ -60,12 +74,33 @@ public class StudentTable{
 	 * @return Returns the number of students
 	 ******************************************************************/
 	public int getRowCount() {
-		// TODO Auto-generated method stub
 		return students.size();
 	}
 	
 	/*******************************************************************
+     * Gets the column count.
+     *
+     * @return Returns the number of columns
+     ******************************************************************/
+    public int getColumnCount() {
+        // TODO Auto-generated method stub
+        return columnNames.length;
+    }
+
+    /*******************************************************************
+     * Gets the column name at a specific index.
+     *
+     * @param col the column index you want the name of
+     * @return returns the name of the specified column
+     ******************************************************************/
+    @Override
+    public String getColumnName(int col) {
+        return columnNames[col];
+    }
+	
+	/*******************************************************************
 	 * Replaces student with the parameter student
+	 * 
 	 * @param s	Student to replace student with
 	 * @param i Index to replace
 	 ******************************************************************/
@@ -81,7 +116,6 @@ public class StudentTable{
 	 * @return returns the object at the specified row and column
 	 ******************************************************************/
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
 		switch (columnIndex) {
 		case 0:
 			return students.get(rowIndex).getName();
@@ -117,27 +151,16 @@ public class StudentTable{
 	}
 	
 	/*******************************************************************
-	 * Adds a student to the list (and updates the view)
-	 * 
-	 * @param student Student to be added to the list
-	 ******************************************************************/
-	public void add(Student student) {
-		students.add(student);
-		edits.add("D," + (getRowCount() - 1));
-	}
-
-	/*******************************************************************
-	 * Removes a student from the list
-	 * 
-	 * @param index the index in the list to be removed
-	 ******************************************************************/
-	public void remove(int index) {
-		edits.add("I," + getAtIndex(index));
-		students.remove(index);
-	}
+     * Private helper method that calls fireTableRowsInserted which
+     * refreshes the table.
+     ******************************************************************/
+    public void refresh() {
+        fireTableRowsInserted(0, getRowCount() - 1);
+    }
 	
 	/*******************************************************************
 	 * Returns the student at the selected index
+	 * 
 	 * @param index	Index selected to retrieve student
 	 * @return	Student at the selected index
 	 * @throws Exception If index is out of bounds of list
@@ -148,39 +171,6 @@ public class StudentTable{
 		}
 		else
 			throw new Exception();
-	}
-	
-	
-	/*******************************************************************
-	 * Helper method that undo's previous operations
-	 ******************************************************************/
-	public void undo() {
-		if (edits.size() > 0) {
-			String execute = edits.get(edits.size() - 1);
-			String[] items = execute.split(",");
-			
-			switch (items[0]) {
-				case "D":
-					remove(Integer.parseInt(items[1]));
-					edits.remove(edits.size() - 1);
-					break;
-				case "I":
-					String input = "";
-					for (int i = 1; i < items.length; i++) 
-						input += (items[i] + ",");
-					try {
-						Student retVal = stringToStudent(input);
-						add(retVal);
-						edits.remove(edits.size() - 1);
-					}
-					catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, 
-								ex.getMessage());
-					}
-					break;
-			}
-		}
-
 	}
 	
 	/*******************************************************************
@@ -215,6 +205,7 @@ public class StudentTable{
 	/******************************************************************
 	 * This method checks that there is no duplicate G-Numbers and that
 	 * it starts with a G.
+	 * 
 	 * @param s Student to check G-number
 	 * @return True if valid, false if invalid.
 	 ******************************************************************/
@@ -258,46 +249,46 @@ public class StudentTable{
 	} 
 	
 	/*******************************************************************
-	 * Saves the list of students as a serializable file
-	 * @param filename name of file to save to 
-	 ******************************************************************/
-	public void saveAsSerialized(String filename) {
-		try {
-			FileOutputStream fos = new FileOutputStream(filename);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(students);
-			oos.close();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	/*******************************************************************
-	 * Loads list of students from serialized file
-	 * @param filename Name of file to load from
-	 ******************************************************************/
-	@SuppressWarnings("unchecked")
-	public void loadFromSerialized(String filename) {
-		try {
-			FileInputStream fileIn = new FileInputStream(filename);
-			ObjectInputStream in = new ObjectInputStream(fileIn);
-			students = (ArrayList<Student>) in.readObject();
-			in.close();
-		}
-		catch(IOException e) {
-			JOptionPane.showMessageDialog
-			(null, "Invalid File!");
-		}
-		catch(ClassNotFoundException e) {
-			JOptionPane.showMessageDialog
-			(null, "Invalid File!");
-		}
-		catch(Exception e) {
-			JOptionPane.showMessageDialog
-			(null, "Invalid File!");
-		}
-		
-	}
+     * Saves the list of students as a serializable file
+     * @param filename name of file to save to 
+     ******************************************************************/
+    public void saveAsSerialized(String filename) {
+        try {
+            FileOutputStream fos = new FileOutputStream(filename);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(students);
+            oos.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    /*******************************************************************
+     * Loads list of students from serialized file
+     * @param filename Name of file to load from
+     ******************************************************************/
+    @SuppressWarnings("unchecked")
+    public void loadFromSerialized(String filename) {
+        try {
+            FileInputStream fileIn = new FileInputStream(filename);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            students = (ArrayList<Student>) in.readObject();
+            in.close();
+        }
+        catch(IOException e) {
+            JOptionPane.showMessageDialog
+            (null, "Invalid File!");
+        }
+        catch(ClassNotFoundException e) {
+            JOptionPane.showMessageDialog
+            (null, "Invalid File!");
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog
+            (null, "Invalid File!");
+        }
+        
+    }
 }

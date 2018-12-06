@@ -2,11 +2,13 @@ package application;
 
 import java.io.Serializable;
 
+
 /***********************************************************************
  * Student class keeps track of the student's information such as 
  * what their name is, their major and class standing, the courses they
  * are taking, and their current ID.
- * @author William Shreeve, Hai Duong, Trunvuong Pham
+ * 
+ * @author William Shreeve, Hai Duong, Trung-Vuong Pham
  **********************************************************************/
 public class Student implements Serializable{
 
@@ -26,7 +28,7 @@ public class Student implements Serializable{
 	protected String gNum;
 	
 	/** student's gpa **/
-	protected float gpa;
+	protected String gpa;
 	
 	/*******************************************************************
 	 * Constructor that sets up the student information with given 
@@ -40,7 +42,7 @@ public class Student implements Serializable{
 	 * 
 	 * @throws Exception Any set methods receive bad data
 	 ******************************************************************/
-	public Student(String name, float gpa, String major, String standing, 
+	public Student(String name, String gpa, String major, String standing, 
 			String gNum) throws Exception{
 		/** sets the name of the student */
 		setName(name);
@@ -84,7 +86,7 @@ public class Student implements Serializable{
 	public void setName(String name)throws Exception{
 		if (name.equals(""))
 			throw new Exception("Invalid Name");
-		this.name = name;
+		this.name=name;
 	}
 	
 	/*******************************************************************
@@ -116,11 +118,28 @@ public class Student implements Serializable{
 		return standing;
 	}
 	
+	/*******************************************************************
+     * Setter method for the student's class standing.
+     * 
+     * @param standing The student's class standing
+     * @throws Exception Any data entered is invalid
+     ******************************************************************/
+    public void setStanding(String standing)throws Exception{
+        if (standing.equals(""))
+            throw new Exception("Invalid Standing");
+        //if (standing.equals("Freshman") || standing.equals("Sophomore") ||
+                //standing.equals("Junior") || standing.equals("Senior") || standing.equals("Graduate"))    
+            this.standing = standing;
+        //else
+            //throw new Exception("Invalid Standing");
+    }
+	
 	/******************************************************************
 	 * Getter method for student's GPA
+	 * 
 	 * @return student's GPA as a float
 	 *****************************************************************/
-	public float getGPA() {
+	public String getGPA() {
 		return gpa;
 	}
 	
@@ -130,26 +149,12 @@ public class Student implements Serializable{
 	 * @param g The student's GPA
 	 * @throws Exception A value less than 0 or higher than 4
 	 ******************************************************************/
-	public void setGPA(float g) throws Exception {
-		if(g > 4.0 || g < 0)
+	public void setGPA(String g) throws Exception {
+		if(Float.parseFloat(g) > 4.0 || Float.parseFloat(g) < 0)
 			throw new Exception("Invalid GPA");
 		this.gpa = g;
 	}
-	/*******************************************************************
-	 * Setter method for the student's class standing.
-	 * 
-	 * @param standing The student's class standing
-	 * @throws Exception Any data entered is invalid
-	 ******************************************************************/
-	public void setStanding(String standing)throws Exception{
-		if (standing.equals(""))
-			throw new Exception("Invalid Standing");
-		//if (standing.equals("Freshman") || standing.equals("Sophomore") ||
-				//standing.equals("Junior") || standing.equals("Senior") || standing.equals("Graduate"))	
-			this.standing = standing;
-		//else
-			//throw new Exception("Invalid Standing");
-	}
+	
 	
 	/*******************************************************************
 	 * Getter method for the student's G Number.
@@ -172,5 +177,4 @@ public class Student implements Serializable{
 		this.gNum = gNum;
 	
 	}
-
 }
